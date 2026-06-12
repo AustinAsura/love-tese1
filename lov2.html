@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>生辰之约 · 致最爱</title>
+    <title>生辰之约 · 挚爱专属</title>
     <!-- Google Fonts 优雅字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 引入 canvas confetti 库 (轻量五彩纸屑) -->
+    <!-- 引入 canvas confetti 库 (轻量五彩纸屑) 备用CDN增强兼容 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* 避免移动端拖动文字，保留触感 */
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -50,20 +50,10 @@
             color: #ff4d6d;
         }
         @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0.4);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.6;
-            }
-            80% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-20vh) scale(1.2);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) scale(0.4); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
         }
 
         /* 主容器卡片风格 */
@@ -76,7 +66,6 @@
             z-index: 10;
         }
 
-        /* 锁屏界面 + 主界面共用卡片 */
         .glass-card {
             backdrop-filter: blur(18px);
             background: rgba(255, 255, 255, 0.3);
@@ -87,7 +76,6 @@
             text-align: center;
         }
 
-        /* 密码界面特有润色 */
         .lock-screen {
             background: rgba(255, 240, 245, 0.5);
             backdrop-filter: blur(20px);
@@ -165,9 +153,9 @@
             box-shadow: 0 5px 12px rgba(0,0,0,0.2);
             font-family: 'Quicksand', sans-serif;
         }
-        .btn-unlock:hover, .btn-unlock:active {
-            background: #ff5e7c;
+        .btn-unlock:active {
             transform: scale(0.97);
+            background: #ff5e7c;
         }
 
         .error-msg {
@@ -188,14 +176,8 @@
             animation: fadeSlideUp 0.8s ease-out;
         }
         @keyframes fadeSlideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .birthday-title {
@@ -212,6 +194,11 @@
             padding: 20px 12px;
             margin: 20px 0;
             backdrop-filter: blur(8px);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .cake-section:active {
+            transform: scale(0.98);
         }
 
         .cake {
@@ -276,30 +263,30 @@
             backdrop-filter: blur(4px);
             font-size: 3rem;
             transition: all 0.2s;
+            cursor: pointer;
+        }
+        .photo-frame:active {
+            transform: scale(0.92);
         }
         .photo-frame span {
             font-size: 3rem;
-        }
-        .photo-frame p {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #8b3c4c;
         }
 
         .action-button {
             background: #ff6680;
             border: none;
-            padding: 12px 22px;
+            padding: 14px 24px;
             border-radius: 50px;
             font-weight: bold;
             color: white;
-            margin-top: 15px;
+            margin-top: 8px;
             margin-bottom: 8px;
             font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
             width: 80%;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+            font-family: 'Quicksand', sans-serif;
         }
         .action-button:active {
             transform: scale(0.96);
@@ -312,7 +299,7 @@
             color: #ffdfe6;
             text-shadow: 0 1px 2px #b1415e;
         }
-        /* iPhone 安全区域适配 */
+
         @supports (padding: max(0px)) {
             .container {
                 padding-left: max(18px, env(safe-area-inset-left));
@@ -321,25 +308,12 @@
             }
         }
 
-        /* 响应式优化 */
         @media (max-width: 550px) {
-            .glass-card {
-                padding: 28px 20px;
-            }
-            .birthday-title {
-                font-size: 2.5rem;
-            }
-            .photo-frame {
-                width: 80px;
-                height: 80px;
-                border-radius: 28px;
-            }
-            .photo-frame span {
-                font-size: 2.2rem;
-            }
-            .message-text {
-                font-size: 1rem;
-            }
+            .glass-card { padding: 28px 20px; }
+            .birthday-title { font-size: 2.5rem; }
+            .photo-frame { width: 80px; height: 80px; border-radius: 28px; }
+            .photo-frame span { font-size: 2.2rem; }
+            .message-text { font-size: 1rem; }
         }
     </style>
 </head>
@@ -358,7 +332,7 @@
         <button class="btn-unlock" id="unlockBtn">✨ 解锁祝福 ✨</button>
         <div id="errorMsg" class="error-msg" style="display: none;">❄️ 密码错误，再试一次～ ❄️</div>
         <div style="margin-top: 25px; font-size: 0.85rem; background: rgba(0,0,0,0.05); border-radius: 40px; padding: 5px 12px; display: inline-block;">
-            🕯️ 农历生辰·七月十二 🕯️
+            🕯️ 农历生辰·七月十二 1999.7.12 🕯️
         </div>
     </div>
 
@@ -368,16 +342,14 @@
             <div class="birthday-title">🎂 生日快乐 🎂</div>
             <div class="sub">To my dearest</div>
 
-            <!-- 蛋糕与蜡烛氛围 -->
-            <div class="cake-section">
+            <div class="cake-section" id="cakeClickArea">
                 <div class="cake">
                     <div class="candle">🕯️✨🕯️</div>
                     <div class="cake-emoji">🎂🍰🎂</div>
-                    <div style="font-size: 0.9rem; margin-top: 8px;">❤️ 许愿啦～ ❤️</div>
+                    <div style="font-size: 0.9rem; margin-top: 8px;">❤️ 许愿吹蜡烛啦 ❤️</div>
                 </div>
             </div>
 
-            <!-- 手写情书区 -->
             <div class="message-card">
                 <div class="love-letter">💌 致 唯一的你 💌</div>
                 <div class="message-text">
@@ -388,357 +360,303 @@
                 </div>
             </div>
 
-            <!-- 回忆小相册 可自定义替换图片/表情 -->
-            <div class="photo-grid">
+            <div class="photo-grid" id="photoGrid">
                 <div class="photo-frame"><span>📸💞</span></div>
                 <div class="photo-frame"><span>🌷🤍</span></div>
                 <div class="photo-frame"><span>✨🎀</span></div>
                 <div class="photo-frame"><span>🍬🍭</span></div>
             </div>
 
-            <!-- 特效与互动按钮 烟花和音乐祝福 -->
             <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 16px 0;">
                 <button class="action-button" id="fireworkBtn">🎇 放一场烟火 🎇</button>
-                <button class="action-button" id="playSongBtn">🎵 生日快乐歌 🎵</button>
+                <button class="action-button" id="playSongBtn">🎵 生日快乐旋律 🎵</button>
             </div>
 
-            <!-- 祝福与年龄 根据农历1999.7.12 (公历换算大约1999.8.22) 显示年龄 2026-1999=27 柔情显示 -->
             <div style="font-size: 0.9rem; background: rgba(255,220,210,0.6); border-radius: 50px; padding: 12px; margin-top: 10px;">
                 🌟 今天是你农历生日 · 1999.7.12 🌟<br>
                 ✨ 2026年的你，依旧是我心底最闪亮的少女 ✨
             </div>
-            <footer>
-                💖 愿你的笑容如星辰般永恒 💖
-            </footer>
+            <footer>💖 愿你的笑容如星辰般永恒 💖</footer>
         </div>
     </div>
 </div>
 
 <script>
-    // 正确的密码：农历生日数字 19990712
-    const CORRECT_PASSWORD = "19990712";
-    
-    // DOM 元素
-    const lockScreen = document.getElementById('lockScreen');
-    const mainContent = document.getElementById('mainContent');
-    const unlockBtn = document.getElementById('unlockBtn');
-    const passwordInput = document.getElementById('passwordInput');
-    const errorMsgDiv = document.getElementById('errorMsg');
-    
-    // 创建动态爱心背景 (更密集的浪漫)
-    function createFloatingHearts() {
-        const heartsContainer = document.getElementById('floatingHearts');
-        const heartSymbols = ['❤️', '💖', '💗', '🌸', '🎀', '✨', '💕', '💓', '🌹', '🍰'];
-        // 生成30个漂浮元素
-        for (let i = 0; i < 45; i++) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            const randomHeart = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-            heart.innerHTML = randomHeart;
-            const size = Math.random() * 30 + 20; // 20px - 50px
-            heart.style.fontSize = size + 'px';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDuration = Math.random() * 8 + 6 + 's'; // 6-14s
-            heart.style.animationDelay = Math.random() * 10 + 's';
-            heart.style.opacity = Math.random() * 0.5 + 0.2;
-            heartsContainer.appendChild(heart);
-        }
-    }
-    createFloatingHearts();
-
-    // 解锁后放烟花效果 + 隐藏锁屏
-    function unlockAndCelebrate() {
-        // 隐藏错误提示
-        errorMsgDiv.style.display = 'none';
-        // 切换界面动画
-        lockScreen.style.transition = 'opacity 0.3s, transform 0.3s';
-        lockScreen.style.opacity = '0';
-        lockScreen.style.transform = 'scale(0.96)';
-        setTimeout(() => {
-            lockScreen.style.display = 'none';
-            mainContent.style.display = 'block';
-            // 触发彩带大礼花
-            canvasConfetti({
-                particleCount: 220,
-                spread: 100,
-                origin: { y: 0.6 },
-                startVelocity: 20,
-                colors: ['#ffb7c5', '#ff6b8b', '#ffd966', '#ff9eb5']
-            });
-            canvasConfetti({
-                particleCount: 100,
-                spread: 130,
-                origin: { y: 0.4, x: 0.3 },
-                startVelocity: 18,
-            });
-            canvasConfetti({
-                particleCount: 100,
-                spread: 130,
-                origin: { y: 0.5, x: 0.7 },
-                startVelocity: 18,
-            });
-            // 二次延迟大效果
-            setTimeout(() => {
-                canvasConfetti({
-                    particleCount: 300,
-                    spread: 120,
-                    origin: { y: 0.5 },
-                    startVelocity: 25,
-                    decay: 0.9
-                });
-            }, 200);
-            // 额外飘落花瓣效果自定义
-            for(let i=0;i<5;i++) {
-                setTimeout(() => {
-                    canvasConfetti({
-                        particleCount: 80,
-                        spread: 70,
-                        origin: { y: 0.8, x: Math.random() },
-                        startVelocity: 12,
-                        colors: ['#ffc0cb', '#ff90b5', '#ffb347']
-                    });
-                }, i*150);
+    (function() {
+        // 正确密码
+        const CORRECT_PASSWORD = "19990712";
+        
+        // DOM 元素
+        const lockScreen = document.getElementById('lockScreen');
+        const mainContent = document.getElementById('mainContent');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMsgDiv = document.getElementById('errorMsg');
+        
+        // 创建漂浮爱心
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById('floatingHearts');
+            const heartSymbols = ['❤️', '💖', '💗', '🌸', '🎀', '✨', '💕', '💓', '🌹', '🍰'];
+            for (let i = 0; i < 48; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                const size = Math.random() * 28 + 18;
+                heart.style.fontSize = size + 'px';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = Math.random() * 8 + 6 + 's';
+                heart.style.animationDelay = Math.random() * 12 + 's';
+                heart.style.opacity = Math.random() * 0.5 + 0.2;
+                heartsContainer.appendChild(heart);
             }
-        }, 180);
-    }
-    
-    // 解锁验证逻辑
-    function verifyPassword() {
-        const enteredPwd = passwordInput.value.trim();
-        if(enteredPwd === CORRECT_PASSWORD) {
-            unlockAndCelebrate();
-        } else {
-            errorMsgDiv.style.display = 'block';
-            errorMsgDiv.style.animation = 'shake 0.4s ease';
-            setTimeout(() => {
-                if(errorMsgDiv) errorMsgDiv.style.animation = '';
-            }, 500);
-            passwordInput.value = '';
-            passwordInput.focus();
-            // 震动反馈（如果支持且符合移动端体验）
-            if (navigator.vibrate) navigator.vibrate(100);
         }
-    }
-    
-    // 为密码输入框添加shake动画
-    const styleShake = document.createElement('style');
-    styleShake.innerHTML = `@keyframes shake {
-        0% { transform: translateX(0); }
-        25% { transform: translateX(-6px); }
-        75% { transform: translateX(6px); }
-        100% { transform: translateX(0); }
-    }`;
-    document.head.appendChild(styleShake);
-    
-    unlockBtn.addEventListener('click', verifyPassword);
-    passwordInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') verifyPassword();
-    });
-    
-    // 限制只能数字输入
-    passwordInput.addEventListener('input', (e) => {
-        this.value = this.value.replace(/\D/g, '').slice(0,8);
-    });
-    
-    // ---------- 主界面交互特效 按钮 烟花 音乐 ----------
-    // 烟花增强按钮
-    const fireworkBtn = document.getElementById('fireworkBtn');
-    if(fireworkBtn) {
-        fireworkBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            canvasConfetti({
-                particleCount: 200,
-                spread: 85,
-                origin: { y: 0.6 },
-                startVelocity: 20,
-                colors: ['#ff69b4', '#ffb347', '#ff6f91', '#d4af37']
-            });
-            canvasConfetti({
-                particleCount: 90,
-                spread: 130,
-                origin: { y: 0.4, x: 0.2 },
-                startVelocity: 25,
-            });
-            canvasConfetti({
-                particleCount: 90,
-                spread: 130,
-                origin: { y: 0.4, x: 0.8 },
-                startVelocity: 25,
-            });
+        createFloatingHearts();
+        
+        // 烟花强化函数 (确保触发且效果显著)
+        function shootFirework() {
+            if (typeof canvasConfetti === 'function') {
+                canvasConfetti({ particleCount: 180, spread: 85, origin: { y: 0.6 }, startVelocity: 20, colors: ['#ff69b4', '#ffb347', '#ff6f91', '#d4af37'] });
+                canvasConfetti({ particleCount: 90, spread: 130, origin: { y: 0.4, x: 0.2 }, startVelocity: 25 });
+                canvasConfetti({ particleCount: 90, spread: 130, origin: { y: 0.4, x: 0.8 }, startVelocity: 25 });
+                setTimeout(() => {
+                    canvasConfetti({ particleCount: 300, spread: 110, origin: { y: 0.7 }, startVelocity: 18, decay: 0.9 });
+                    canvasConfetti({ particleCount: 60, spread: 60, origin: { y: 0.5 }, startVelocity: 22, shapes: ['heart'], colors: ['#ff2d5e', '#ff86a2'] });
+                }, 150);
+                if (navigator.vibrate) navigator.vibrate(80);
+            } else {
+                console.warn("confetti库未加载，采用备用样式");
+                alert("🎉 生日快乐！烟花在心中绽放 🎉");
+            }
+        }
+        
+        // 解锁庆祝烟花
+        function unlockCelebration() {
+            if (typeof canvasConfetti === 'function') {
+                canvasConfetti({ particleCount: 220, spread: 100, origin: { y: 0.6 }, startVelocity: 22, colors: ['#ffb7c5', '#ff6b8b', '#ffd966'] });
+                canvasConfetti({ particleCount: 120, spread: 130, origin: { y: 0.4, x: 0.3 } });
+                canvasConfetti({ particleCount: 120, spread: 130, origin: { y: 0.5, x: 0.7 } });
+                setTimeout(() => { canvasConfetti({ particleCount: 400, spread: 120, origin: { y: 0.5 }, startVelocity: 25 }); }, 180);
+            } else {
+                console.log("烟花备用展示");
+            }
+        }
+        
+        // --- 音频引擎：解决微信中声音小的问题，提高音量并确保上下文启动 ---
+        let audioCtx = null;
+        let currentOscillators = [];
+        let isPlaying = false;
+        
+        async function playBirthdayMelody() {
+            // 停止当前正在播放的旋律
+            if (currentOscillators.length) {
+                currentOscillators.forEach(osc => { try { osc.stop(); } catch(e) {} });
+                currentOscillators = [];
+                isPlaying = false;
+            }
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                // 确保音频上下文处于运行状态（用户点击触发，所以允许）
+                if (audioCtx.state === 'suspended') {
+                    await audioCtx.resume();
+                }
+                // 生日快乐旋律 (更响亮, 增益从0.55提升到0.7)
+                const notesSeq = [
+                    { freq: 523.25, duration: 0.45 }, // C5
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 587.33, duration: 0.45 }, // D5
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 659.25, duration: 0.45 }, // E5
+                    { freq: 783.99, duration: 0.85 }, // G5
+                    { freq: 0, duration: 0.2 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 587.33, duration: 0.45 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 698.46, duration: 0.45 }, // F#5
+                    { freq: 659.25, duration: 0.85 },
+                    { freq: 0, duration: 0.2 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 783.99, duration: 0.45 },
+                    { freq: 659.25, duration: 0.45 },
+                    { freq: 587.33, duration: 0.45 },
+                    { freq: 523.25, duration: 0.85 },
+                    { freq: 0, duration: 0.2 },
+                    { freq: 783.99, duration: 0.45 },
+                    { freq: 783.99, duration: 0.45 },
+                    { freq: 698.46, duration: 0.45 },
+                    { freq: 659.25, duration: 0.45 },
+                    { freq: 523.25, duration: 0.45 },
+                    { freq: 659.25, duration: 0.45 },
+                    { freq: 523.25, duration: 1.1 }
+                ];
+                const now = audioCtx.currentTime;
+                let timeCursor = now;
+                const oscillatorsList = [];
+                
+                for (let note of notesSeq) {
+                    if (note.freq > 0) {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.value = note.freq;
+                        osc.type = 'sine';
+                        // 提高音量至0.7，更明亮
+                        gain.gain.setValueAtTime(0.7, timeCursor);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, timeCursor + note.duration - 0.05);
+                        osc.start(timeCursor);
+                        osc.stop(timeCursor + note.duration);
+                        oscillatorsList.push(osc);
+                    }
+                    timeCursor += note.duration;
+                }
+                currentOscillators = oscillatorsList;
+                isPlaying = true;
+                // 播放同时增加彩带小特效
+                if (typeof canvasConfetti === 'function') {
+                    canvasConfetti({ particleCount: 50, spread: 40, origin: { y: 0.8 }, startVelocity: 8, colors: ['#f9c7d3', '#ffb7c5'] });
+                }
+                // 结束后重置标志
+                setTimeout(() => { isPlaying = false; currentOscillators = []; }, (timeCursor - now) * 1000 + 200);
+            } catch (err) {
+                console.warn("音乐播放失败", err);
+                if (navigator.vibrate) navigator.vibrate(100);
+            }
+        }
+        
+        // 解锁并切换到主界面
+        function unlockAndShow() {
+            errorMsgDiv.style.display = 'none';
+            lockScreen.style.transition = 'opacity 0.3s, transform 0.3s';
+            lockScreen.style.opacity = '0';
+            lockScreen.style.transform = 'scale(0.96)';
             setTimeout(() => {
-                canvasConfetti({
-                    particleCount: 400,
-                    spread: 100,
-                    origin: { y: 0.7 },
-                    startVelocity: 15,
-                    decay: 0.9
+                lockScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+                unlockCelebration();
+                // 额外动态绑定主界面按钮（强化防止微信下事件丢失）
+                rebindMainEvents();
+                // 尝试预激活音频上下文，为后续音乐做好准备（但不播放）
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume().catch(e=>console.log);
+                }
+            }, 180);
+        }
+        
+        function verifyPassword() {
+            const entered = passwordInput.value.trim();
+            if (entered === CORRECT_PASSWORD) {
+                unlockAndShow();
+            } else {
+                errorMsgDiv.style.display = 'block';
+                errorMsgDiv.style.animation = 'shake 0.4s ease';
+                setTimeout(() => { if(errorMsgDiv) errorMsgDiv.style.animation = ''; }, 500);
+                passwordInput.value = '';
+                passwordInput.focus();
+                if (navigator.vibrate) navigator.vibrate(80);
+            }
+        }
+        
+        // 重新绑定主界面所有交互（保证烟花、音乐、相册、蛋糕的点击都能触发烟花或音乐）
+        function rebindMainEvents() {
+            const fireBtn = document.getElementById('fireworkBtn');
+            const musicBtn = document.getElementById('playSongBtn');
+            const cakeArea = document.getElementById('cakeClickArea');
+            const photoFrames = document.querySelectorAll('.photo-frame');
+            
+            // 烟火按钮
+            if (fireBtn) {
+                // 移除原有监听器避免重复绑定，使用新监听
+                const newFireBtn = fireBtn.cloneNode(true);
+                fireBtn.parentNode.replaceChild(newFireBtn, fireBtn);
+                newFireBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    shootFirework();
                 });
-            }, 150);
-            // 额外爱心烟花粒
-            canvasConfetti({
-                particleCount: 30,
-                spread: 45,
-                origin: { y: 0.5 },
-                startVelocity: 22,
-                shapes: ['heart'],
-                colors: ['#ff2d5e', '#ff86a2']
-            });
-        });
-    }
-    
-    // 音乐播放器: 利用 web audio 简单生日歌旋律 + 可选加载网络资源（优雅呈现）
-    // 实现通过 AudioContext 生成简单八音盒效果，避免外部链接失效，同时浪漫且原创。
-    let audioCtx = null;
-    let isAudioAllowed = false;
-    let currentMelody = null;
-    
-    function playBirthdayMelody() {
-        // 优雅的生日快乐旋律 (使用 Web Audio Api 合成)
-        try {
+            }
+            // 音乐按钮
+            if (musicBtn) {
+                const newMusicBtn = musicBtn.cloneNode(true);
+                musicBtn.parentNode.replaceChild(newMusicBtn, musicBtn);
+                newMusicBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    await playBirthdayMelody();
+                });
+            }
+            // 蛋糕区域点击放烟花+许愿效果
+            if (cakeArea) {
+                const newCake = cakeArea.cloneNode(true);
+                cakeArea.parentNode.replaceChild(newCake, cakeArea);
+                newCake.addEventListener('click', () => {
+                    shootFirework();
+                    if (typeof canvasConfetti === 'function') {
+                        canvasConfetti({ particleCount: 100, spread: 70, origin: { y: 0.55 }, startVelocity: 12, colors: ['#f4a261', '#e76f51', '#e9c46a'] });
+                    }
+                });
+            }
+            // 相册点击烟花小效果
+            const newPhotoGrid = document.getElementById('photoGrid');
+            if (newPhotoGrid) {
+                const oldPhotos = document.querySelectorAll('.photo-frame');
+                oldPhotos.forEach(photo => {
+                    const clonePhoto = photo.cloneNode(true);
+                    photo.parentNode.replaceChild(clonePhoto, photo);
+                    clonePhoto.addEventListener('click', () => {
+                        if (typeof canvasConfetti === 'function') {
+                            canvasConfetti({ particleCount: 45, spread: 45, origin: { y: 0.7, x: Math.random() * 0.8 + 0.1 }, startVelocity: 10, colors: ['#ff99bb', '#ffc8dd', '#bde0fe'] });
+                        }
+                    });
+                });
+            }
+        }
+        
+        // 密码界面事件
+        unlockBtn.addEventListener('click', verifyPassword);
+        passwordInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') verifyPassword(); });
+        passwordInput.addEventListener('input', function(e) { this.value = this.value.replace(/\D/g, '').slice(0,8); });
+        
+        // 添加震动样式shake
+        const styleShake = document.createElement('style');
+        styleShake.innerHTML = `@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } 100% { transform: translateX(0); } }`;
+        document.head.appendChild(styleShake);
+        
+        // 初始化聚焦密码框
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (lockScreen && lockScreen.style.display !== 'none') passwordInput.focus();
+            }, 200);
+            // 预先创建audioCtx但不自动播放（符合规范）
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                // 静默suspend，等到用户点击音乐按钮才会真正启动
+                if (audioCtx.state === 'running') audioCtx.suspend();
             }
-            // 如果已经播放，先停止振荡器 (简单防重叠)
-            if (currentMelody) {
-                try { currentMelody.forEach(osc => osc.stop()); } catch(e) {}
-                currentMelody = null;
-            }
-            const now = audioCtx.currentTime;
-            // 生日快乐简谱 对应C大调 简谱: 5 5 6 5 1 7 - 5 5 6 5 2 1 - 5 5 5 3 1 7 6 - 4 4 3 1 2 1 - 1 1
-            const notes = [
-                { freq: 523.25, duration: 0.4 }, // C5 (1)
-                { freq: 523.25, duration: 0.4 },
-                { freq: 587.33, duration: 0.4 }, // D5 (2)
-                { freq: 523.25, duration: 0.4 },
-                { freq: 659.25, duration: 0.4 }, // E5 (3)
-                { freq: 783.99, duration: 0.8 }, // G5 (5)
-                { freq: 0, duration: 0.2 }, // 休止
-                { freq: 523.25, duration: 0.4 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 587.33, duration: 0.4 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 698.46, duration: 0.4 }, // F#5 (4)
-                { freq: 659.25, duration: 0.8 },
-                { freq: 0, duration: 0.2 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 783.99, duration: 0.4 },
-                { freq: 659.25, duration: 0.4 },
-                { freq: 587.33, duration: 0.4 },
-                { freq: 523.25, duration: 0.8 },
-                { freq: 0, duration: 0.2 },
-                { freq: 783.99, duration: 0.4 },
-                { freq: 783.99, duration: 0.4 },
-                { freq: 698.46, duration: 0.4 },
-                { freq: 659.25, duration: 0.4 },
-                { freq: 523.25, duration: 0.4 },
-                { freq: 659.25, duration: 0.4 },
-                { freq: 523.25, duration: 1.0 }
-            ];
-            const oscillators = [];
-            let time = now;
-            notes.forEach(note => {
-                if (note.freq > 0) {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.frequency.value = note.freq;
-                    gain.gain.value = 0.25;
-                    osc.type = 'sine';
-                    osc.start(time);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, time + note.duration);
-                    osc.stop(time + note.duration);
-                    oscillators.push(osc);
-                }
-                time += note.duration;
-            });
-            currentMelody = oscillators;
-            // 自动播放需要用户首次触摸交互，但按钮触发已经满足手势
-        } catch(e) {
-            console.warn("AudioContext error", e);
-            // fallback: 无法播放时用简单alert友好提醒? 但不用烦人，做个震动提示即可
-            if (navigator.vibrate) navigator.vibrate(200);
-        }
-    }
-    
-    // 由于音乐按钮第一次需要用户允许，但点击按钮会调用play并初始化 AudioContext。
-    const songBtn = document.getElementById('playSongBtn');
-    if(songBtn) {
-        songBtn.addEventListener('click', () => {
-            // 初始化播放生日歌
-            playBirthdayMelody();
-            // 而且加烟花助兴(小)
-            canvasConfetti({
-                particleCount: 60,
-                spread: 55,
-                origin: { y: 0.8 },
-                startVelocity: 12,
-                colors: ['#fdd0f2', '#ffb7c5']
-            });
-            // 如果还在锁屏状态就不触发(但仅在主界面可见)
         });
-    }
-    
-    // 增加互动: 点击相框效果小烟花
-    const photoFrames = document.querySelectorAll('.photo-frame');
-    photoFrames.forEach(frame => {
-        frame.addEventListener('click', () => {
-            canvasConfetti({
-                particleCount: 40,
-                spread: 45,
-                origin: { y: 0.7, x: Math.random() * 0.8 + 0.1 },
-                startVelocity: 10,
-                colors: ['#ff99bb', '#ffc8dd', '#bde0fe']
-            });
-        });
-    });
-    
-    // 全局触摸二次补偿（让音乐按钮在移动端一定获取用户手势）
-    document.body.addEventListener('touchstart', function initAudio() {
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }, { once: true });
-    
-    // 另外如果用户在主界面点击蛋糕区域也发射一些彩色纸屑
-    const cakeDiv = document.querySelector('.cake-section');
-    if(cakeDiv) {
-        cakeDiv.addEventListener('click', (e) => {
-            canvasConfetti({
-                particleCount: 80,
-                spread: 70,
-                origin: { y: 0.55 },
-                startVelocity: 12,
-                colors: ['#f4a261', '#e76f51', '#e9c46a']
-            });
-        });
-    }
-    
-    // 设置自动在密码界面聚焦，显示数字键盘
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            if (lockScreen.style.display !== 'none') {
-                passwordInput.focus();
+        
+        // 确保全局点击audioCtx恢复处理（当用户第一次点击任何按钮时，让音乐上下文就绪）
+        const resumeAudioOnTouch = async () => {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                await audioCtx.resume();
             }
-        }, 150);
-        // 额外增加一些动态日期提示
-        const today = new Date();
-        // 只是氛围
-    });
-    
-    // 优雅错误处理，避免控制台噪音
-    console.log("✨ 生日秘境已准备好，输入密码19990712解锁 ✨");
-    
-    // 兼容iPhone防止键盘遮挡 (简单滚动)
-    passwordInput.addEventListener('focus', () => {
-        setTimeout(() => {
-            if (lockScreen.style.display !== 'none') {
-                lockScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }, 300);
-    });
+            document.body.removeEventListener('touchstart', resumeAudioOnTouch);
+            document.body.removeEventListener('click', resumeAudioOnTouch);
+        };
+        document.body.addEventListener('touchstart', resumeAudioOnTouch);
+        document.body.addEventListener('click', resumeAudioOnTouch);
+        
+        // 如果主界面后来因为动态绑定，但首次解锁后rebind已经调用
+        // 另外为了防止主界面直接展示时元素未绑定彻底，第一次解锁时执行rebind
+        // 额外保证在有些场景下再次执行
+        window.rebindIfNeeded = function() {
+            if (mainContent && mainContent.style.display === 'block') rebindMainEvents();
+        };
+    })();
 </script>
 </body>
 </html>
